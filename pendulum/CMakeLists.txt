@@ -8,14 +8,14 @@ cmake_minimum_required(VERSION 3.12.4)
 # Programs
 #  - pendulum
 
-set (PROJECT_NAME pendulum)
+set(PROJECT_NAME pendulum)
 
 project(${PROJECT_NAME})
 
-option( TESTING "Is the program compiled for tests only (without display)." OFF)
+option(TESTING "Is the program compiled for tests only (without display)." Off)
 
 # Add definition for relative path into project
-add_definitions( -DPROJECT_ROOT_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
+add_definitions(-DPROJECT_ROOT_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Disable C and C++ compiler extensions.
 # C/CXX_EXTENSIONS are ON by default to allow the compilers to use extended
@@ -25,7 +25,6 @@ add_definitions( -DPROJECT_ROOT_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
 # extensions off.
 set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -87,19 +86,19 @@ endif()
 if(NOT ${TESTING})
 	# *******************************************
 	# ************** SDL2 LIBRARY ***************
-	# *******************************************
-	# Set variables before finding SDL Library
-	# Helps to find where SDL libraries are saved (win32 only)
-	set(LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+	# *******************************************	
 	set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/lib/cmake_modules/")
-	
+
 	if(WIN32)
+		# Set variables before finding SDL Library
+		# Helps to find where SDL libraries are saved (win32 only)
+		set(LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 		# find the SDL2-x.y.z folder in the lib directory.
 		file(GLOB SDL2DIR "${LIBS_DIR}/SDL2-[\\.|0-9]*")
 		set(ENV{SDL2DIR} ${SDL2DIR})
 	endif()
 	
-	Find_Package (SDL2 REQUIRED )
+	Find_Package (SDL2 REQUIRED)
 	
 	if(NOT SDL2_FOUND)
 	MESSAGE(FATAL_ERROR "SDL not found !")
@@ -133,7 +132,7 @@ if(NOT ${TESTING})
 		set(ENV{SDL2IMAGEDIR} ${SDL2IMAGEDIR})
 	endif()
 	
-	Find_Package (SDL2_image REQUIRED )
+	Find_Package (SDL2_image REQUIRED)
 	
 	if(NOT SDL2IMAGE_FOUND)
 	MESSAGE(FATAL_ERROR "SDL Image not found !")
@@ -165,9 +164,8 @@ if(NOT ${TESTING})
 		file(GLOB SDL2TTFDIR "${LIBS_DIR}/SDL2_ttf-[\\.|0-9]*")
 		set(ENV{SDL2TTFDIR} ${SDL2TTFDIR})
 	endif()
-	
-	
-	Find_Package (SDL2TTF REQUIRED )
+		
+	Find_Package (SDL2TTF REQUIRED)
 	
 	if(NOT SDL2TTF_FOUND)
 	MESSAGE(FATAL_ERROR "SDL2TTF not found !")
@@ -211,7 +209,7 @@ add_executable(${PROJECT_NAME} ${pendulum_files})
 target_link_libraries(${PROJECT_NAME} ${GEGELATI_LIBRARIES}  ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY})
 target_compile_definitions(${PROJECT_NAME} PRIVATE ROOT_DIR="${CMAKE_SOURCE_DIR}")
 
-# Code Gen example with the TPG store in the file pendulum/src/CodeGen/Pendulum_out_best.dot
+# Code Generation example with the TPG stored in the file pendulum/src/CodeGen/Pendulum_out_best.dot
 
 # Create the target that will generate the C code of the TPG
 set(TARGET_CodeGen ${PROJECT_NAME}CodeGenCompile)

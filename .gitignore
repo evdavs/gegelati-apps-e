@@ -42,8 +42,14 @@ Thumbs.db
 
 # Typical folders
 **/bin/
+**/bin*/
 **/lib/
 **/dat/
+**/logs/
+**/.vscode
+pendulum/scripts/*
+
+!pendulum/scripts/data_analysis.ipynb
 
 # CLion generated files
 **/.idea/
@@ -51,3 +57,6 @@ Thumbs.db
 # CMake generated files
 **/cmake-build-debug/
 **/cmake-build-release/
+
+# Custom files
+**/context.txt

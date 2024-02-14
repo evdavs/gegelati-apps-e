@@ -10,10 +10,7 @@
 #include <iostream>
 #include <float.h>
 
-#include <gegelati.h>
-
 #include "../Learn/instructions.h"
-
 
 int main() {
 
@@ -29,8 +26,7 @@ int main() {
 	std::vector<std::reference_wrapper<const Data::DataHandler>> data = { currentState };
 
 	Learn::LearningParameters params;
-	File::ParametersParser::loadParametersFromJson(
-		ROOT_DIR"/params.json", params);
+	File::ParametersParser::loadParametersFromJson(ROOT_DIR"/params.json", params);
 	Environment dotEnv(set, data, params.nbRegisters, params.nbProgramConstant);
 	TPG::TPGGraph dotGraph(dotEnv);
 
@@ -41,7 +37,6 @@ int main() {
 	CodeGen::TPGGenerationEngineFactory factory(CodeGen::TPGGenerationEngineFactory::switchMode);
 	std::unique_ptr<CodeGen::TPGGenerationEngine> tpggen = factory.create("pendulum", dotGraph, "src/");
 	tpggen->generateTPGGraph();
-
 
 	return 0;
 }

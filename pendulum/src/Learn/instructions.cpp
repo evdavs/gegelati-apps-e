@@ -27,7 +27,6 @@ void fillInstructionSet(Instructions::Set& set) {
 	set.add(*(new Instructions::LambdaInstruction<double>(cos, "$0 = cos($1);")));
 	set.add(*(new Instructions::LambdaInstruction<double>(sin, "$0 = sin($1);")));
 	set.add(*(new Instructions::LambdaInstruction<double>(tan, "$0 = tan($1);")));
-	set.add(*(new Instructions::LambdaInstruction<double, Data::Constant>(multByConst,
-		"$0 = $1 * ((double)($2) / 10.0);")));
+	set.add(*(new Instructions::LambdaInstruction<double, Data::Constant>(multByConst, "$0 = $1 * ((double)($2) / 10.0);")));
 	set.add(*(new Instructions::LambdaInstruction<double>(pi, "$0 = M_PI;")));
 }

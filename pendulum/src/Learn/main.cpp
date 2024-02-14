@@ -10,8 +10,29 @@
 #include "pendulum.h"
 #include "render.h"
 #include "instructions.h"
+#include "tools.h"
+
+#ifndef ROOT_DIR
+#error "preprocessor directive ROOT_DIR is not defined! Please define ROOT_DIR during compilation."
+#endif
 
 int main() {
+
+	//Create a folder for storing the results of the training experimentations
+	char* saveFolderPath = createFolderWithCurrentTime();
+
+	// Export the src/instructions.cpp file and the params.json file to 
+	// keep traceability when looking at the logs
+	char filename_src[BUFFER_SIZE];
+	char filename_dest[BUFFER_SIZE];
+
+	sprintf(filename_src, "%s/src/Learn/instructions.cpp", ROOT_DIR);
+	sprintf(filename_dest, "%s/instructions.cpp", saveFolderPath);
+	copyFile(filename_src, filename_dest);
+
+	sprintf(filename_src, "%s/params.json", ROOT_DIR);
+	sprintf(filename_dest, "%s/params.json", saveFolderPath);
+	copyFile(filename_src, filename_dest);
 
 	std::cout << "Start Pendulum application." << std::endl;
 
@@ -38,8 +59,6 @@ int main() {
 	Learn::ParallelLearningAgent la(pendulumLE, set, params);
 	la.init();
 
-	const TPG::TPGVertex* bestRoot = NULL;
-
 	// Start a thread for controlling the loop
 #ifndef NO_CONSOLE_CONTROL
 	// Console
@@ -47,6 +66,7 @@ int main() {
 	std::atomic<bool> toggleDisplay = true;
 	std::atomic<bool> doDisplay = false;
 	std::atomic<uint64_t> generation = 0;
+	const TPG::TPGVertex* bestRoot = NULL;
 
 	std::thread threadDisplay(Render::controllerLoop, std::ref(exitProgram), std::ref(toggleDisplay), std::ref(doDisplay),
 		&bestRoot, std::ref(set), std::ref(pendulumLE), std::ref(params), std::ref(generation));
@@ -60,8 +80,21 @@ int main() {
 	// Basic logger
 	Log::LABasicLogger basicLogger(la);
 
+	//CSV logger
+	char* CSVfilename = concatenateStrings(saveFolderPath, "/training_data.csv");
+	std::ofstream CSVof;
+	CSVof.open (CSVfilename, std::ios::out);
+	if (!CSVof.is_open()) 
+	{ 
+		std::cout << "Cannot open file " << CSVfilename << std::endl;
+		exit(0);
+	}
+	Log::LABasicLogger csvLogger(la, CSVof, 0, ",");
+
 	// Create an exporter for all graphs
-	File::TPGGraphDotExporter dotExporter("out_0000.dot", *la.getTPGGraph());
+	char buff[BUFFER_SIZE];
+	sprintf(buff, "%s/Graphs/out_0000.dot", saveFolderPath);
+	File::TPGGraphDotExporter dotExporter(buff, *la.getTPGGraph());
 
 	// Logging best policy stat.
 	std::ofstream stats;
@@ -69,14 +102,13 @@ int main() {
 	Log::LAPolicyStatsLogger policyStatsLogger(la, stats);
 
 	// Export parameters before starting training.
-	// These may differ from imported parameters because of LE or machine specific
+    // These may differ from imported parameters because of LE or machine specific
 	// settings such as thread count of number of actions.
 	File::ParametersParser::writeParametersToJson("exported_params.json", params);
 
 	// Train for params.nbGenerations generations
-	for (int i = 0; i < params.nbGenerations && !exitProgram; i++) {
-		char buff[13];
-		sprintf(buff, "out_%04d.dot", i);
+	for (uint64_t i = 0; i < params.nbGenerations && !exitProgram; i++) {
+		sprintf(buff, "%s/Graphs/out_%04ld.dot", saveFolderPath, i);
 		dotExporter.setNewFilePath(buff);
 		dotExporter.print();
 
@@ -99,14 +131,17 @@ int main() {
 	la.getTPGGraph()->clearProgramIntrons();
 
 	// Export the graph
-	dotExporter.setNewFilePath("out_best.dot");
+	sprintf(buff, "%s/Graphs/out_best.dot", saveFolderPath);
+	dotExporter.setNewFilePath(buff);
 	dotExporter.print();
 
+	// Export stats file to logs directory
 	TPG::PolicyStats ps;
 	ps.setEnvironment(la.getTPGGraph()->getEnvironment());
 	ps.analyzePolicy(la.getBestRoot().first);
 	std::ofstream bestStats;
-	bestStats.open("out_best_stats.md");
+	sprintf(buff, "%s/out_best_stats.md", saveFolderPath);
+	bestStats.open(buff);
 	bestStats << ps;
 	bestStats.close();
 	stats.close();
@@ -115,6 +150,8 @@ int main() {
 	for (unsigned int i = 0; i < set.getNbInstructions(); i++) {
 		delete (&set.getInstruction(i));
 	}
+	
+	delete[] saveFolderPath;
 
 #ifndef NO_CONSOLE_CONTROL
 	// Exit the thread
