@@ -48,6 +48,7 @@ Thumbs.db
 **/logs/
 **/.vscode
 pendulum/scripts/*
+**/instructions_sets/*
 
 !pendulum/scripts/data_analysis.ipynb
 

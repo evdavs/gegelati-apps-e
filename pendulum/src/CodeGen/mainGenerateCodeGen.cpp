@@ -30,7 +30,7 @@ int main() {
 	Environment dotEnv(set, data, params.nbRegisters, params.nbProgramConstant);
 	TPG::TPGGraph dotGraph(dotEnv);
 
-	std::string filename(path + "Pendulum_out_best.dot");
+	std::string filename(path + "out_best.dot");
 	File::TPGGraphDotImporter dot(filename.c_str(), dotEnv, dotGraph);
 	dot.importGraph();
 

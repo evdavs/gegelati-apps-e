@@ -22,14 +22,13 @@ int main() {
 
 	// Load parameters
 	Learn::LearningParameters params;
-	File::ParametersParser::loadParametersFromJson(
-		ROOT_DIR "/params.json", params);
+	File::ParametersParser::loadParametersFromJson(ROOT_DIR "/params.json", params);
 
 	// Load graph from dot file
 	std::string path(ROOT_DIR "/src/CodeGen/");
 	Environment dotEnv(set, le.getDataSources(), params.nbRegisters, params.nbProgramConstant);
 	TPG::TPGGraph dotGraph(dotEnv);
-	std::string filename(path + "Pendulum_out_best.dot");
+	std::string filename(path + "out_best.dot");
 	File::TPGGraphDotImporter dot(filename.c_str(), dotEnv, dotGraph);
 	dot.importGraph();
 
