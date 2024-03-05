@@ -1,5 +1,5 @@
-#ifndef PENDULUM_H
-#define PENDULUM_H
+#ifndef PENDULUMLE_H
+#define PENDULUMLE_H
 
 #include <gegelati.h>
 
@@ -53,6 +53,14 @@ private:
 	/// Current velocity of the pendulum in [-1;1]
 	Data::PrimitiveTypeArray<double> currentState;
 
+	Data::PrimitiveTypeArray<double> modifiedState;
+
+	/// Getter for angle state
+	double getAngle() const;
+
+	/// Getter for velocity
+	double getVelocity() const;
+
 protected:
 	/// Setter for angle state
 	void setAngle(double newValue);
@@ -70,7 +78,8 @@ public:
 	Pendulum(const std::vector<double>& actions) :
 		LearningEnvironment(actions.size() * 2 + 1), // see availableActions comment.
 		availableActions{ actions },
-		currentState{ 2 }
+		currentState{ 2 },
+		modifiedState{ 2 }
 	{};
 
 	/**
@@ -79,12 +88,6 @@ public:
 	* Default copy constructor since all attributes are trivially copyable.
 	*/
 	Pendulum(const Pendulum& other) = default;
-
-	/// Getter for angle state
-	double getAngle() const;
-
-	/// Getter for velocity
-	double getVelocity() const;
 
 	/// Inherited via LearningEnvironment
 	virtual std::vector<std::reference_wrapper<const Data::DataHandler>> getDataSources() override;
@@ -143,4 +146,4 @@ public:
 	virtual bool isTerminal() const override;
 };
 
-#endif // !PENDULUM_H
+#endif // !PENDULUMLE_H

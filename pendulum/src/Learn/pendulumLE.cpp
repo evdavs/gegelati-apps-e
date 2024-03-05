@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES // To get M_PI
 #include <math.h>
 
-#include "pendulum.h"
+#include "pendulumLE.h"
 
 const double Pendulum::MAX_SPEED = 8.0;
 const double Pendulum::MAX_TORQUE = 2.0;
@@ -15,11 +15,13 @@ const double Pendulum::STABILITY_THRESHOLD = 0.1;
 void Pendulum::setAngle(double newValue)
 {
 	this->currentState.setDataAt(typeid(double), 0, newValue);
+	this->modifiedState.setDataAt(typeid(double), 0, newValue * 1000);
 }
 
 void Pendulum::setVelocity(double newValue)
 {
 	this->currentState.setDataAt(typeid(double), 1, newValue);
+	this->modifiedState.setDataAt(typeid(double), 1, newValue * 1000);
 }
 
 double Pendulum::getAngle() const
@@ -29,13 +31,13 @@ double Pendulum::getAngle() const
 
 double Pendulum::getVelocity() const
 {
-	return *this->currentState.getDataAt(typeid(const double), 1).getSharedPointer<const double>();;
+	return *this->currentState.getDataAt(typeid(const double), 1).getSharedPointer<const double>();
 }
 
 std::vector<std::reference_wrapper<const Data::DataHandler>> Pendulum::getDataSources()
 {
 	auto result = std::vector<std::reference_wrapper<const Data::DataHandler>>();
-	result.push_back(this->currentState);
+	result.emplace_back(this->modifiedState);
 	return result;
 }
 

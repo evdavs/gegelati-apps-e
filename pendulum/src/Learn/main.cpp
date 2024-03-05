@@ -7,7 +7,7 @@
 #define _USE_MATH_DEFINES // To get M_PI
 #include <math.h>
 
-#include "pendulum.h"
+#include "pendulumLE.h"
 #include "render.h"
 #include "instructions.h"
 #include "tools.h"
@@ -57,7 +57,7 @@ int main() {
 
 	// Instantiate and init the learning agent
 	Learn::ParallelLearningAgent la(pendulumLE, set, params);
-	la.init();
+	la.init();//seed as param if needed
 
 	// Start a thread for controlling the loop
 #ifndef NO_CONSOLE_CONTROL

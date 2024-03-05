@@ -35,7 +35,7 @@ int main() {
 	dot.importGraph();
 
 	CodeGen::TPGGenerationEngineFactory factory(CodeGen::TPGGenerationEngineFactory::switchMode);
-	std::unique_ptr<CodeGen::TPGGenerationEngine> tpggen = factory.create("pendulum", dotGraph, "src/");
+	std::unique_ptr<CodeGen::TPGGenerationEngine> tpggen = factory.create("TPG", dotGraph, "src/");
 	tpggen->generateTPGGraph();
 
 	return 0;

@@ -64,8 +64,8 @@
 			// /* "nbActions" : 0,*/ // Commented by default
 			/* "nbActions" : 0,*/
 			// Number of root TPGTeams to maintain when populating the TPGGraph
-			// "nbRoots" : 100, // Default value //previous val was 2000
-			"nbRoots" : 1000,
+			// "nbRoots" : 100, // Default value //previous val was 2000 //360
+			"nbRoots" : 360,
 			// Probability of adding an outgoing Edge to a Team.
 			// "pEdgeAddition" : 0.7, // Default value
 			"pEdgeAddition" : 0.7,
@@ -84,8 +84,8 @@
 		}
 	},
 	// Number of generations of the training.
-	// "nbGenerations" : 500, // Default value //prev 45 //2000 // 1200
-	"nbGenerations" : 3,
+	// "nbGenerations" : 500, // Default value //prev 45 //2000 // 1200 //500
+	"nbGenerations" : 500,
 	// [Only used in AdversarialLearningAgent.]
 	// Number of times each job is evaluated in the learning process.
 	// Each root may belong to several jobs, hence this parameter should be lower
@@ -108,6 +108,6 @@
 	// /* "nbThreads" : 0,*/ // Commented by default
 	/* "nbThreads" : 0,*/
 	// Percentage of deleted (and regenerated) root TPGVertex at each generation.
-	// "ratioDeletedRoots" : 0.5, // Default value, QVacher:on souhaite garder environ 100 roots soit 1-100/nbRoots 
+	// "ratioDeletedRoots" : 0.5, // Default value 
 	"ratioDeletedRoots" : 0.5
 }

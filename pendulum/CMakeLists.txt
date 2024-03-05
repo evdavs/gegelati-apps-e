@@ -207,13 +207,15 @@ endif()
 
 ## Read the README.md associated to the project to understand the structure of the targets.
 
-## ${PROJECT_NAME} target ##
+## ${PROJECT_NAME} target for Training the TPG on the Pendulum ##
 include_directories(${GEGELATI_INCLUDE_DIRS}  ${SDL2_INCLUDE_DIR} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2TTF_INCLUDE_DIR})
-add_executable(${PROJECT_NAME} ${PENDULUM_FILES})
-target_link_libraries(${PROJECT_NAME} ${GEGELATI_LIBRARIES} ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY})
-target_compile_definitions(${PROJECT_NAME} PRIVATE ROOT_DIR="${CMAKE_SOURCE_DIR}")
+set(TARGET_LEARN ${PROJECT_NAME}Learn)
+add_executable(${TARGET_LEARN} ${PENDULUM_FILES})
+target_link_libraries(${TARGET_LEARN} ${GEGELATI_LIBRARIES} ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2TTF_LIBRARY})
+target_compile_definitions(${TARGET_LEARN} PRIVATE ROOT_DIR="${CMAKE_SOURCE_DIR}")
 
-## ${PROJECT_NAME}GenerateCodeGen target ##
+
+## ${PROJECT_NAME}GenerateCodeGen target for generating the epurated code of the TPG trained (faster than with lib) ##
 # Code Generation (codegen) example with the TPG stored in the file pendulum/src/CodeGen/out_best.dot
 # Create the target that will generate the C code of the TPG, this is the codegen target
 set(TARGET_CODEGEN ${PROJECT_NAME}GenerateCodeGen)
@@ -233,22 +235,24 @@ file(MAKE_DIRECTORY ${SRC_CODEGEN_GENERATED})
 set(SRC_CODEGEN_MAIN ./src/CodeGen)
 include_directories(${SRC_CODEGEN_GENERATED} ${SRC_CODEGEN_MAIN})
 # set a variable CODEGEN_FILES that groups all the codegen files
-set(CODEGEN_FILES ${SRC_CODEGEN_GENERATED}/${PROJECT_NAME}.c ${SRC_CODEGEN_GENERATED}/${PROJECT_NAME}_program.c ${SRC_CODEGEN_GENERATED}/${PROJECT_NAME}.h ${SRC_CODEGEN_GENERATED}/${PROJECT_NAME}_program.h)
+set(CODEGEN_FILES ${SRC_CODEGEN_GENERATED}/TPGtree.c ${SRC_CODEGEN_GENERATED}/TPGprograms.c ${SRC_CODEGEN_GENERATED}/TPGtree.h ${SRC_CODEGEN_GENERATED}/TPGprograms.h)
 # set codeGen source file as generated
 set_source_files_properties(${CODEGEN_FILES} PROPERTIES GENERATED TRUE)
 
-## wrap generation of source files in a custom command + custom target ##
+
+## wrap generation of source files in a custom command + custom target for directly executing the CodeGen ##
 # make ${EXEC_CODEGEN} is the union of "make ${TARGET_CODEGEN}" + "./${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TARGET_CODEGEN})"
 add_custom_command(OUTPUT ${CODEGEN_FILES} COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TARGET_CODEGEN})
 set(EXEC_CODEGEN ${PROJECT_NAME}ExecuteCodeGen)
 add_custom_target(${EXEC_CODEGEN} DEPENDS ${CODEGEN_FILES})
 add_dependencies(${EXEC_CODEGEN} ${TARGET_CODEGEN})
 
-## ${PROJECT_NAME}InferenceCodegen target ##
+
+## ${PROJECT_NAME}InferenceCodegen target for measuring the perf of the TPG during Inference ##
 # name for the executable that use the previously generated codegen files to do an inference
 set(TARGET_INFERENCE_CODEGEN ${PROJECT_NAME}InferenceCodeGen)
 # create binary that need the generated file
-set(INFERENCE_CODEGEN_FILES ${SRC_CODEGEN_MAIN}/mainInferenceCodeGen.cpp ./src/Learn/instructions.cpp ./src/Learn/pendulum.cpp ./src/Learn/render.cpp ${CODEGEN_FILES})
+set(INFERENCE_CODEGEN_FILES ${SRC_CODEGEN_MAIN}/mainInferenceCodeGen.cpp ./src/Learn/instructions.cpp ./src/Learn/pendulumLE.cpp ./src/Learn/render.cpp ${CODEGEN_FILES})
 if(${TESTING})
 	list(REMOVE_ITEM INFERENCE_CODEGEN_FILES "./src/Learn/render.cpp")
 endif()
@@ -259,7 +263,8 @@ target_compile_definitions(${TARGET_INFERENCE_CODEGEN} PRIVATE ROOT_DIR="${CMAKE
 # set the custom target that generate the source file as a dependency of the target
 add_dependencies(${TARGET_INFERENCE_CODEGEN} ${EXEC_CODEGEN})
 
-## ${PROJECT_NAME}TPGInference target ##
+
+## ${PROJECT_NAME}InferenceDot target for measuring the perf of the TPG during Inference ##
 # Create a project that does the inference from the dot 
 set(TARGET_INFERENCE_DOT ${PROJECT_NAME}InferenceDot)
 set(INFERENCE_DOT_FILES ${PENDULUM_FILES} ${SRC_CODEGEN_MAIN}/mainInferenceDot.cpp)

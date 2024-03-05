@@ -12,7 +12,7 @@ The build process of applications relies on [cmake](https://cmake.org) to config
 4. Open the project created in the `bin` folder, or launch the build with the following command: `cmake --build .`.
 
 ## Compile for training
-The target `pendulum_Learn` is used for training the TPG on the provided Learning Environment. The result of this training are stored under the `logs` directory and under the directory corresponding to the date of execution (i.e `logs/2024-02-26_15-03-00`)
+The target `pendulumLearn` is used for training the TPG on the provided Learning Environment. The result of this training are stored under the `logs` directory and under the directory corresponding to the date of execution (i.e `logs/2024-02-26_15-03-00`)
 - a set of TPG graphs retracing the best TPG at each generation of the training
 - out_best.dot the best TPG found during the whole training
 - out_best_stats.md statistics on the TPG. Topology, program size, DataHandlers infos.
