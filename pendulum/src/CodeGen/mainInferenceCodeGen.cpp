@@ -2,12 +2,12 @@
 
 extern "C" {
 #include "externHeader.h"
-#include "pendulum.h"
+#include "pendulumLE.h"
 	/// instantiate global variable used to communicate between the TPG and the environment
 	double* in1;
 }
 
-#include "../Learn/pendulum.h"
+#include "../trash/pendulumLE.h"
 #include "../Learn/instructions.h"
 
 #ifndef NO_CONSOLE_CONTROL

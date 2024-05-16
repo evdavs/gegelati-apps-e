@@ -252,7 +252,7 @@ add_dependencies(${EXEC_CODEGEN} ${TARGET_CODEGEN})
 # name for the executable that use the previously generated codegen files to do an inference
 set(TARGET_INFERENCE_CODEGEN ${PROJECT_NAME}InferenceCodeGen)
 # create binary that need the generated file
-set(INFERENCE_CODEGEN_FILES ${SRC_CODEGEN_MAIN}/mainInferenceCodeGen.cpp ./src/Learn/instructions.cpp ./src/Learn/pendulumLE.cpp ./src/Learn/render.cpp ${CODEGEN_FILES})
+set(INFERENCE_CODEGEN_FILES ${SRC_CODEGEN_MAIN}/mainInferenceCodeGen.cpp ./src/Learn/instructions.cpp ./src/Learn/render.cpp ${CODEGEN_FILES})
 if(${TESTING})
 	list(REMOVE_ITEM INFERENCE_CODEGEN_FILES "./src/Learn/render.cpp")
 endif()

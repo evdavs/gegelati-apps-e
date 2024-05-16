@@ -85,7 +85,7 @@
 	},
 	// Number of generations of the training.
 	// "nbGenerations" : 500, // Default value //prev 45 //2000 // 1200 //500
-	"nbGenerations" : 500,
+	"nbGenerations" : 50,
 	// [Only used in AdversarialLearningAgent.]
 	// Number of times each job is evaluated in the learning process.
 	// Each root may belong to several jobs, hence this parameter should be lower
@@ -93,7 +93,7 @@
 	// "nbIterationsPerJob" : 1, // Default value
 	"nbIterationsPerJob" : 1,
 	// Number of evaluation of each root per generation.
-	// "nbIterationsPerPolicyEvaluation" : 5, // Default value //prev 10
+	// "nbIterationsPerPolicyEvaluation" :5, // Default value //prev 10
 	"nbIterationsPerPolicyEvaluation" : 5,
 	// Number of Constant available in each Program.
 	// "nbProgramConstant" : 0, // Default value

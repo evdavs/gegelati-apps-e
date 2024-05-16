@@ -7,7 +7,6 @@
 #define _USE_MATH_DEFINES // To get M_PI
 #include <math.h>
 
-#include "pendulumLE.h"
 #include "render.h"
 #include "instructions.h"
 #include "tools.h"
@@ -51,12 +50,12 @@ int main() {
 #endif
 
 	// Instantiate the LearningEnvironment
-	Pendulum pendulumLE({ 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0 });
+	PendulumLE pendulumLE({ 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0 });
 
 	std::cout << "Number of threads: " << params.nbThreads << std::endl;
 
 	// Instantiate and init the learning agent
-	Learn::ParallelLearningAgent la(pendulumLE, set, params);
+	Learn::LearningAgent la(pendulumLE, set, params);
 	la.init();//seed as param if needed
 
 	// Start a thread for controlling the loop

@@ -8,6 +8,7 @@
 
 #include <thread>
 #include <atomic>
+#include "gegelati.h"
 
 #define DISPLAY_W 500
 #define DISPLAY_H 500
@@ -46,7 +47,7 @@ namespace Render {
 	* 
 	*/
 	void controllerLoop(std::atomic<bool>& exit, std::atomic<bool>& toggleDisplay, std::atomic<bool>& doDisplay,
-		const TPG::TPGVertex** bestRoot, const Instructions::Set& set, Pendulum& pendulumLE, const Learn::LearningParameters& params,
+		const TPG::TPGVertex** bestRoot, const Instructions::Set& set, PendulumLE& pendulumLE, const Learn::LearningParameters& params,
 		std::atomic<uint64_t>& generation);
 
 	/**

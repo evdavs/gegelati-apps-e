@@ -4,13 +4,13 @@
 #include <math.h>
 
 // SDL libs
-#include <SDL.h>
+#include <SDL.H>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <float.h>
 
 #include <gegelati.h>
-#include "pendulum.h"
+#include "../trash/pendulumLE.h"
 #include "render.h"
 
 /**

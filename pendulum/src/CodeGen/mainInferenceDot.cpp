@@ -4,7 +4,7 @@
 
 double* in1;
 
-#include "../Learn/pendulum.h"
+#include "../trash/pendulumLE.h"
 #include "../Learn/instructions.h"
 
 #ifndef NO_CONSOLE_CONTROL
